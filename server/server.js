@@ -1,17 +1,10 @@
-require('./config/config');
 
 const express = require('express');
-const app = express();
-
-const colors = require('colors');
-
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const colors = require('colors');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use (bodyParser.json());
-
-app.use( require('./routes/index') );
+require('./config/config');
 
 mongoose.connect(process.env.KDB, {
     useNewUrlParser: true,
@@ -22,6 +15,13 @@ mongoose.connect(process.env.KDB, {
     if (err) throw err;
     console.log('ONLINE Database'.gray)
 });
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use (bodyParser.json());
+
+app.use( require('./routes/index') );
 
 app.listen(process.env.PORT, () => {
     console.log('Listening!'.blue, process.env.PORT);
